@@ -1,0 +1,128 @@
+-- exclui o banco de dados se já existe
+DROP DATABASE IF EXISTS revenda;
+-- cria o banco de dados
+CREATE DATABASE revenda;
+-- utiliza o banco de dados
+USE revenda;
+
+-- ////////////////////////////////////////////////////////////////////
+CREATE TABLE MARCA(
+ID INT AUTO_INCREMENT,
+NOME VARCHAR(50) NOT NULL,
+PRIMARY KEY (ID)
+);
+
+
+-- ////////////////////////////////////////////////////////////////////
+CREATE TABLE MODELO(
+ID INT AUTO_INCREMENT,
+ID_MARCA INT NULL,
+NOMEMOD VARCHAR(50) NOT NULL,
+PRIMARY KEY (ID),
+FOREIGN KEY (ID_MARCA) REFERENCES MARCA(ID)
+	-- ON DELETE RESTRICT	
+	ON DELETE SET NULL
+	-- ON UPDATE RESTRICT
+	ON UPDATE CASCADE
+);
+
+-- ////////////////////////////////////////////////////////////////////
+CREATE TABLE VEICULO(
+ID INT AUTO_INCREMENT,
+PLACA CHAR(8) NOT NULL,
+KM INT,
+COR VARCHAR(20),
+VALOR FLOAT(6) NOT NULL,
+ID_MODELO INT,
+PRIMARY KEY (ID),
+FOREIGN KEY (ID_MODELO) REFERENCES MODELO(ID)	
+	ON DELETE SET NULL
+	ON UPDATE CASCADE);
+
+-- ////////////////////////////////////////////////////////////////////
+CREATE TABLE OPCIONAL(
+ID INT AUTO_INCREMENT,
+DESCRICAO TINYTEXT -- VARCHAR(255)
+PRIMARY KEY (ID)
+);
+
+
+-- ////////////////////////////////////////////////////////////////////
+CREATE TABLE VEICULO_TEM_OPCIONAL(
+ID_VEICULO INT NOT NULL,
+ID_OPCIONAL INT NOT NULL,
+PRIMARY KEY (ID_VEICULO, ID_OPCIONAL),
+FOREIGN KEY (ID_VEICULO) REFERENCES VEICULO(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
+FOREIGN KEY (ID_OPCIONAL) REFERENCES OPCIONAL(ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE);
+
+
+-- ////////////////////////////////////////////////////////////////////
+INSERT INTO MARCA(ID, NOME)
+VALUES(default, 'Fiat'),
+	(default, 'Ford'),
+	(default, 'Volkswagen'),
+	(default, 'Chevrolet');
+
+
+-- ////////////////////////////////////////////////////////////////////
+INSERT INTO MODELO (ID, NOMEMOD,ID_MARCA)
+VALUES (DEFAULT, 'Palio',1),
+	(default, 'Corsa', 4),
+	(default, 'Uno', 1);
+
+
+-- ////////////////////////////////////////////////////////////////////
+INSERT INTO VEICULO (ID, PLACA, KM, COR, VALOR, ID_MODELO)
+VALUES (default, 'KKK-9999', 20000, 'Branco', 23000.00,2),
+	(default, 'IAI-0202', 24500, 'Preto', 33900.89,1);
+
+
+-- ////////////////////////////////////////////////////////////////////
+INSERT INTO OPCIONAL (ID, DESCRICAO)
+VALUES (default, 'Ar Condicionado'),
+	(default, 'freio ABS'),
+	(default, 'Direção hidráulica'),
+	(default, 'Teto solar'),
+	(default, 'Vídros elétricos'),
+	(default, 'Alarme'),
+	(default, 'Bancos de couro'),
+	(default, 'Rodas de liga leve'),
+	(default, 'Faróis de Xenon');
+
+
+-- ////////////////////////////////////////////////////////////////////
+INSERT INTO VEICULO_TEM_OPCIONAL(ID_VEICULO, ID_OPCIONAL)
+VALUES (1,3),
+	(1,5),
+	(1,6),
+	(2,1),
+	(2,3),
+	(2,5),
+	(2,6);
+
+
+
+-- ////////////////////////////////////////////////////////////////////
+SELECT VEICULO.PLACA, OPCIONAL.DESCRICAO VEICULO_TEM_OPCIONAL.ID_OPCIONAL 
+FROM VEICULO_TEM_OPCIONAL
+JOIN VEICULO ON VEICULO.ID = VEICULO_TEM_OPCIONAL.ID_VEICULO;
+
+
+
+
+-- ////////////////////////////////////////////////////////////////////
+SELECT VEICULO.PLACA, OPCIONAL.DESCRICAO 
+FROM VEICULO_TEM_OPCIONAL
+JOIN VEICULO ON VEICULO.ID = VEICULO_TEM_OPCIONAL.ID_VEICULO
+JOIN OPCIONAL ON OPCIONAL.ID = VEICULO_TEM_OPCIONAL.ID_OPCIONAL;
+
+
+-- ////////////////////////////////////////////////////////////////////
+
+
+
+

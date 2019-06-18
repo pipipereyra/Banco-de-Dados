@@ -1,0 +1,81 @@
+Elabore a criação de um banco de dados (DADOS) e de uma tabela (PESSOAS) para armazenar pessoas.
+Deve ser registrado o CPF da pessoa, nome, sobrenome, data de nascimento, cidade, estado, rua, número, complemento, bairro e profissão.
+CREATE TABLE PESSOAS (
+ID INT PRIMARY KEY AUTO_INCREMENT,
+CPF CHAR(14) NOT NULL,
+NOME VARCHAR(50) NOT NULL,
+SOBRENOME VARCHAR(100) NOT NULL,
+NASC DATE,
+CIDADE VARCHAR(100),
+ESTADO CHAR(2),
+RUA VARCHAR(100),
+NUM INT(6),
+COMP VARCHAR(50),
+BAIRRO VARCHAR(50),
+PROF VARCHAR(100));
+Crie um arquivo .txt ou .sql, contendo todas as instruções. Inclua o enunciado, junto com a SQL de seleção.
+1. (1,0) Efetue a inserção de, pelo menos, 15 registros nessa tabela
+	1-> ("307.881.767-90","Ian Luan","Heitor Fernandes","1977-07-09","Ituiutaba","MG","Rua Doutor Omar Oliveira Diniz",500,"casa","São José","Pedreiro"),
+	2-> ("611.783.684-83","Luzia Betina" ,"Mendes","1987-08-08","Cachoeirinha ","RS","Rua João Januário Nunes",184 ,"Casa","Vila Monte Carlo","Padeira"),
+	3-> ("841.871.202-38","Thales Sérgio ","Renato Fernandes","1980-08-13","Passo Fundo ","RS","Avenida João Cattapan",744,"Casa","Boqueirão","Professor"),
+	4-> ("253.399.723-48","Olivia Vera","Brito","1962-05-16","Ariquemes ","RO","Avenida Rio Pardo",145,"Casa","Setor 02","Policial"),
+	5-> ("483.368.617-18","Erick Thales ","Kaique da Luz","1979-06-20","Gurupi" ,"TO","Rua 78-A",219,"Casa","Setor dos Funcionários","Dentista"), 
+	6-> ("319.902.250-20","Tatiane Isabela","Fernanda Ribeiro","1968-01-18","João Pessoa","PB","Rua Frei Antônio Gonçalves",866,"Casa","Funcionários","Engenheiro"),
+	7-> ("658.373.749-30","Thales Danilo","Breno Figueiredo","1990-05-12","Itajai","SC","Rua Florianópolis",166,"Casa","Fazenda","Veterinario"),
+	8-> ("373.423.144-20","Simone Lorena","Camilo Melo","1980-12-25","Santana","AP","Travessa RAIMUNDO PEREIRA DE SOUZA",544,"Casa","Fortaleza","Arquiteta"),
+	9-> ("262.245.053-22","Sérgio Mário","André da Rocha","1983-03-05","Ipatinga","MG","Rua Zita Soares de Oliveira",158,"Residencia","Centro","Programador"),
+	10-> ("275.200.498-25","Laís Heloise","Fernandes","1992-04-07","Macaé","RJ","Rua Geraldo de Souza Ferreira",131,"Fundos","Imboassica","Vendedora"),
+	11-> ("902.577.784-89","Leonardo Cauã","Peixoto","1979-02-16","Natal","RN","Rua Palmira Rêgo",748,"Residencia","Tirol","Doutor"),
+	12-> ("874.899.011-62","Emanuelly Analu","Patrícia Brito","1988-02-20","Campo Largo","PR","Rua Francisco Marthaus",369,"Casa","Jardim das Palmeiras","Contadora"),
+	13-> ("880.780.249-08","Giovanni","Ryan Lopes","1990-11-01","Gurupi","TO","Rua 14-A",608,"Casa","Parque Residencial Nova Fronteira","Caixa"),
+	14-> ("504.902.867-12","Débora Regina","Nogueira","1995-04-20","Salvador","BA","1ª Travessa Rio Pajeú",619,"Residência","Praia Grande","Empresária"),
+	15-> ("531.235.363-94","Oliver Marcos","Vinicius Araújo","1997-01-06","Marabaixo","AP","Travessa Goiás",302,"Casa","Marabaixo","Geólogo");
+
+2. (0,2) Efetue seleções de:
+a. Nome das pessoas que residem no estado do Rio Grande do Sul
+SELECT `NOME` FROM `PESSOAS` WHERE ESTADO = "RS"
+
+b. Nome por ordem decrescente e data de nascimento
+SELECT `NOME`, `NASC` FROM `PESSOAS`ORDER BY NOME DESC;
+
+c. Nome, ordenados por sobrenome
+SELECT `NOME`, `SOBRENOME` FROM `PESSOAS` ORDER BY SOBRENOME;
+
+d. Todas as profissões distintas
+SELECT DISTINCT `PROF` FROM `PESSOAS`;
+
+e. Profissão e nome das pessoas que residem no estado de São Paulo
+SELECT `NOME`, `PROF` FROM `PESSOAS` WHERE ESTADO = "SP";
+
+f. Nome e data de nascimento das pessoas que nasceram entre os anos de 1990 e 1980
+SELECT `NOME`, `NASC` FROM `PESSOAS` WHERE NASC BETWEEN "1980-01-01" AND "1990-12-31";
+
+g. Todas as ruas que existam na cidade de Porto Alegre, agrupadas
+SELECT `CIDADE`, `RUA` FROM `PESSOAS` WHERE CIDADE = "PORTO ALEGRE" GROUP BY "RUA";
+
+h. CPF e nome de todas as pessoas que moram em Porto Alegre, São Paulo ou no Rio de Janeiro
+SELECT `CPF`, `NOME`, `CIDADE` FROM `PESSOAS` WHERE CIDADE = "PORTO ALEGRE" OR CIDADE="SÃO PAULO" OR CIDADE="RIO DE JANEIRO";
+
+i. Contagem de quantos registros há de pessoas que moram no Centro da cidade do Rio de Janeiro
+SELECT `CIDADE`, `BAIRRO`, `ID`, COUNT(`ID`) AS QUANTIDADE FROM `PESSOAS` WHERE CIDADE = "RIO DE JANEIRO" AND BAIRRO = "CENTRO";
+
+j. CPF, rua e bairro de pessoas que nasceram entre 1980 e 1985 ou entre 1990 e 2000, agrupadas por bairro em ordem crescente
+SELECT  `CPF`,`NASC`, `RUA`,`BAIRRO` FROM `PESSOAS` WHERE (NASC BETWEEN "1980-01-01" AND "1985-12-31") OR (NASC BETWEEN "1990-01-01" AND "2000-12-31") GROUP BY BAIRRO ORDER BY NASC ASC;
+
+k. Rua, número, e complemento de todos os motoristas que moram nos estados do Rio Grande do Sul ou Santa Catarina
+SELECT `ESTADO`, `RUA`, `NUM`, `PROF` AS MOTORISTAS FROM `PESSOAS` WHERE (ESTADO = "RS" OR ESTADO = "SC") AND (PROF = "MOTORISTA");
+
+l. Todas as informações de pessoas que trabalham com profissão que começa com a letra G.
+SELECT * FROM `PESSOAS` WHERE PROF = "G%";
+
+m. (0,6) Mais 3 instruções de seleção distintas das demais
+1-SELECT `NOME`, `PROF` FROM `PESSOAS` WHERE PROF <> "POLICIAL";
+2-SELECT `CPF`, `NASC`,`RUA`, `NUM` FROM `PESSOAS` WHERE CPF LIKE "3%";
+3-SELECT `CPF`, `COMP`, count(`NOME`) as num_pessoas FROM `PESSOAS` GROUP BY (COMP);
+
+3. (1,0) Elabore a deleção de, pelo menos, 5 registros
+1) DELETE FROM `PESSOAS` WHERE PROF = "POLICIAL";
+2) DELETE FROM `PESSOAS` WHERE CPF LIKE "4%";
+3) DELETE FROM `PESSOAS` WHERE NASC BETWEEN "1990-01-01" AND "1995-12-31";
+4) DELETE FROM `PESSOAS` WHERE ESTADO = "SC" AND ESTADO = "SP";
+5) DELETE FROM `PESSOAS` WHERE COMP <> "CASA";

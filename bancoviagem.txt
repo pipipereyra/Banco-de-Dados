@@ -1,0 +1,78 @@
+DROP DATABASE IF EXISTS caminhoes;
+CREATE DATABASE caminhoes;
+USE caminhoes;
+
+CREATE TABLE caminhao (
+id INT AUTO_INCREMENT,
+placa char(8) NOT NULL,
+PRIMARY KEY (id));
+
+CREATE TABLE motorista(
+id int AUTO_INCREMENT,
+nome VARCHAR(50) NOT NULL,
+PRIMARY KEY (id));
+ 
+CREATE TABLE cidade(
+id INT AUTO_INCREMENT,
+nome VARCHAR(50) NOT NULL,
+PRIMARY KEY(id));
+
+CREATE TABLE viagem(
+id INT AUTO_INCREMENT,
+id_caminhao INT,
+id_motorista INT,
+id_cidade INT,
+hora TIME NOT NULL,
+data DATE NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (id_caminhao) REFERENCES caminhao(id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
+FOREIGN KEY (id_motorista) REFERENCES motorista(id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
+FOREIGN KEY (id_cidade) REFERENCES cidade(id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE);
+
+
+--///////////////////////////////////////////////////////////
+
+INSERT INTO caminhao VALUES
+(DEFAULT, 'IAI9122'),
+(DEFAULT, 'AZE3322');
+
+INSERT INTO motorista (nome) VALUES
+('Anderson'),
+('Maicon');
+
+INSERT INTO cidade VALUES
+(DEFAULT, 'Durazno'),
+(DEFAULT, 'Montevideo');
+
+INSERT INTO viagem (id_caminhao, id_motorista, id_cidade, data, hora)
+VALUES
+(2,1,1,'2018-06-08', '13:00:00'),
+(1,2,2,'2018-02-09', '19:00:00'),
+(2,2,2,'2019-01-10','05:00:00'),
+(1,2,2,'2019-06-10', '20:31:10');
+
+--///////////////////////////////////////////////////////////
+
+SELECT id, id_caminhao, id_motorista, id_cidade, data, hora
+FROM viagem;
+
+
+SELECT viagem.id, 
+	ca.placa,
+	mo.nome,
+	ci.nome,
+	data,
+	hora
+FROM viagem
+JOIN caminhao as ca on ca.id=viagem.id_caminhao
+JOIN motorista as mo on mo.id=viagem.id_motorista
+JOIN cidade as ci on ci.id=viagem.id_cidade;
+
+
+
